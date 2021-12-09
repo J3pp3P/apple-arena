@@ -10,6 +10,8 @@ namespace throw_apple2 {
 
             _rotation = MathHelper.Pi / 2;
             _speed = 3f;
+            //hej 
+
 
 
         }
