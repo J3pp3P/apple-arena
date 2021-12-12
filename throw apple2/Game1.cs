@@ -8,6 +8,7 @@ namespace throw_apple2 {
         private SpriteBatch _spriteBatch;
         private int _screenWidth, _screenHeight, _screenCenterY, _screenCenterX;
         private Player _player;
+        private Wall _wall1;
         private int playerRadius = 20;
 
         public Game1() {
@@ -30,6 +31,8 @@ namespace throw_apple2 {
 
         protected override void LoadContent() {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            _wall1 = new Wall(this, "wall1", new Vector2(0, 0));
 
             _player = new Player(this, "redHatRotated", new Vector2(_screenCenterX, _screenCenterY));
             _player.Radius = playerRadius;
@@ -71,6 +74,7 @@ namespace throw_apple2 {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             _spriteBatch.Begin();
             _spriteBatch.Draw(_player.Texture, _player.getRectangle(), null, _player.Color, _player.Rotation, _player.getCenter(), SpriteEffects.None, 0f);
+            _spriteBatch.Draw(_wall1.Texture, _wall1.getRectangle(), null, _wall1.Color, _wall1.Rotation, _wall1.getCenter(), SpriteEffects.None, 0f);
             _spriteBatch.End();
             base.Draw(gameTime);
         }
