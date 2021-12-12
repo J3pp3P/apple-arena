@@ -23,7 +23,6 @@ namespace throw_apple2 {
             Position += _velocity;
         }
 
-
         public Rectangle getRectangle() {
             return new Rectangle(_position.ToPoint(), new Point((int)_radius * 2, (int)_radius * 2));
         }
