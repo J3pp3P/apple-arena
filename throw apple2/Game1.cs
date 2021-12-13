@@ -16,7 +16,7 @@ namespace throw_apple2 {
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
-
+        //isak was here
         protected override void Initialize() {
             // TODO: Add your initialization logic here
             _graphics.PreferredBackBufferWidth = 1000;
