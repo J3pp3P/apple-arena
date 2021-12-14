@@ -16,7 +16,7 @@ namespace throw_apple2 {
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
-        //isak was here
+        
         protected override void Initialize() {
             // TODO: Add your initialization logic here
             _graphics.PreferredBackBufferWidth = 1000;
@@ -32,9 +32,9 @@ namespace throw_apple2 {
         protected override void LoadContent() {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            _wall1 = new Wall(this, "wall1", new Vector2(0, 0));
+            _wall1 = new Wall(this, "wall1", new Vector2(_screenCenterX, _screenCenterY));
 
-            _player = new Player(this, "redHatRotated", new Vector2(_screenCenterX, _screenCenterY));
+            _player = new Player(this, "redHatRotated", new Vector2(0, 0));
             _player.Radius = playerRadius;
             // TODO: use this.Content to load your game content here
         }
@@ -65,6 +65,20 @@ namespace throw_apple2 {
                 _player.Rotation += 0.1f;
             }
 
+            //wallcollision
+            //left
+            if (_player.Position.X > _wall1.Position.X - _wall1.Radius && _player.Position.Y < _wall1.Position.Y + _wall1.Radius) {
+                _player.Position = new Vector2(_wall1.Position.X - _wall1.Radius, _player.Position.Y);
+            } else if (true) {
+
+            }
+            //right
+
+            //top
+
+            //bottom
+
+            //objectBounds(_player, _wall1);
             worldBounds(_player);
             _player.Update();
             base.Update(gameTime);
@@ -92,5 +106,23 @@ namespace throw_apple2 {
                 e.Position = new Vector2(e.Position.X, _screenHeight - e.Radius);
             }
         }
+        private void objectBounds(Entity a, Entity b) {
+            
+            if (a.Position.X + a.Radius < b.Position.X - b.Radius && 
+                a.Position.Y < b.Position.Y - b.Radius && 
+                a.Position.Y > b.Position.Y + b.Radius) {
+
+                
+                a.Position = new Vector2(b.Position.X + b.Radius, a.Position.Y);
+            } 
+            /*else if (a.Position.X + a.Radius > aw) {
+                a.Position = new Vector2(_screenWidth - a.Radius, a.Position.Y);
+            }
+            if (a.Position.Y - a.Radius < 0) {
+                a.Position = new Vector2(a.Position.X, 0 + a.Radius);
+            } else if (a.Position.Y > _screenHeight - a.Radius) {
+                a.Position = new Vector2(a.Position.X, _screenHeight - a.Radius);
+            }*/
+        } 
     }
 }

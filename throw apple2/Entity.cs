@@ -10,6 +10,10 @@ namespace throw_apple2 {
         protected Color _color;
         protected float _radius;
         protected bool _isAlive;
+        private int _downSide;
+        private int _leftSide;
+        private int _rightSide;
+        private int _upSide;
 
         public Entity(Game game, string texturename, Vector2 position) {
             _position = position;
@@ -17,12 +21,14 @@ namespace throw_apple2 {
             _radius = _texture.Width / 2;
             _color = Color.White;
             _isAlive = true;
+
+
         }
 
         public virtual void Update() {
             Position += _velocity;
         }
-        
+
 
         public Rectangle getRectangle() {
             return new Rectangle(_position.ToPoint(), new Point((int)_radius * 2, (int)_radius * 2));

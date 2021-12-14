@@ -10,10 +10,6 @@ namespace throw_apple2 {
         public Player(Game game, string texturename, Vector2 position) : base(game, texturename, position) {
             _rotation = -MathHelper.Pi / 2;
             _speed = 3f;
-            //hej 
-
-
-
         }
 
         public override void Update() {
