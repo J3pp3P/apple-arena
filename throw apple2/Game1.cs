@@ -10,7 +10,7 @@ namespace throw_apple2 {
         private Player _player;
         private Wall _wall1;
         private int playerRadius = 20;
-
+        //d
         public Game1() {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
