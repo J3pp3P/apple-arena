@@ -8,13 +8,15 @@ namespace throw_apple2 {
         private SpriteBatch _spriteBatch;
         private int _screenWidth, _screenHeight, _screenCenterY, _screenCenterX;
         private Player _player;
+        private Wall _wall1;
+        private int playerRadius = 20;
 
         public Game1() {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
-
+        //isak was here
         protected override void Initialize() {
             // TODO: Add your initialization logic here
             _graphics.PreferredBackBufferWidth = 1000;
@@ -30,7 +32,10 @@ namespace throw_apple2 {
         protected override void LoadContent() {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            _player = new Player(this, "diamond", new Vector2(_screenCenterX, _screenCenterY));
+            _wall1 = new Wall(this, "wall1", new Vector2(0, 0));
+
+            _player = new Player(this, "redHatRotated", new Vector2(_screenCenterX, _screenCenterY));
+            _player.Radius = playerRadius;
             // TODO: use this.Content to load your game content here
         }
 
@@ -38,18 +43,28 @@ namespace throw_apple2 {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
             KeyboardState _ks = Keyboard.GetState();
-            // TODO: Add your update logic here
 
+            //rotation
+            
+
+            //forward
+            if (_ks.IsKeyDown(Keys.W)) {
+                _player.Forward = true;
+            } else {
+                _player.Forward = false;
+            }
+            //backwards
+            if (_ks.IsKeyDown(Keys.S)) {
+                _player.Back = true;
+            } else {
+                _player.Back = false;
+            }
             if (_ks.IsKeyDown(Keys.A)) {
                 _player.Rotation -= 0.1f;
             } else if (_ks.IsKeyDown(Keys.D)) {
                 _player.Rotation += 0.1f;
             }
-            if (_ks.IsKeyDown(Keys.W)) {
-                _player.Thrust = true;
-            } else {
-                _player.Thrust = false;
-            }
+
             worldBounds(_player);
             _player.Update();
             base.Update(gameTime);
@@ -59,9 +74,11 @@ namespace throw_apple2 {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             _spriteBatch.Begin();
             _spriteBatch.Draw(_player.Texture, _player.getRectangle(), null, _player.Color, _player.Rotation, _player.getCenter(), SpriteEffects.None, 0f);
+            _spriteBatch.Draw(_wall1.Texture, _wall1.getRectangle(), null, _wall1.Color, _wall1.Rotation, _wall1.getCenter(), SpriteEffects.None, 0f);
             _spriteBatch.End();
             base.Draw(gameTime);
         }
+        
 
         private void worldBounds(Entity e) {
             if (e.Position.X - e.Radius < 0) {
