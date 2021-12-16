@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Diagnostics;
 
 namespace throw_apple2 {
@@ -73,54 +74,46 @@ namespace throw_apple2 {
             } else if (true) {
 
             }*/
-            if (_player.Position.X - _player.Radius < _wall1.Position.X + _wall1.Radius &&
-                _player.Position.X + _player.Radius > _wall1.Position.X - _wall1.Radius) {
+            
                 //mitten av objektet i y led
                 if (_player.Position.Y < _wall1.Position.Y) {
-                    if (_player.Position.Y + _player.Radius > _wall1.Position.Y - _wall1.Radius) {
+                    if (_player.Position.Y + _player.Radius > _wall1.Position.Y - _wall1.Radius &&
+                        _player.Position.X - _player.Radius < _wall1.Position.X + _wall1.Radius &&
+                        _player.Position.X + _player.Radius > _wall1.Position.X - _wall1.Radius) {
                         _player.Position = new Vector2(_player.Position.X, _wall1.Position.Y - _wall1.Radius - _player.Radius);
                     }
                 } else {
-                    if (_player.Position.Y - _player.Radius < _wall1.Position.Y + _wall1.Radius) {
+                    if (_player.Position.Y - _player.Radius < _wall1.Position.Y + _wall1.Radius &&
+                        _player.Position.X - _player.Radius < _wall1.Position.X + _wall1.Radius &&
+                        _player.Position.X + _player.Radius > _wall1.Position.X - _wall1.Radius) {
                         _player.Position = new Vector2(_player.Position.X, _wall1.Position.Y + _wall1.Radius + _player.Radius);
                     }
                 }
-            }
+            
 
             //kolliderar i y led
-            if (_player.Position.Y - _player.Radius < _wall1.Position.Y + _wall1.Radius &&
-                _player.Position.Y + _player.Radius > _wall1.Position.Y - _wall1.Radius) {
+            
                 //mitten av objektet i X led
-                Debug.WriteLine("hej");
+                
                 if (_player.Position.X < _wall1.Position.X) {
-                    if (_player.Position.X + _player.Radius > _wall1.Position.X - _wall1.Radius) {
+                Debug.WriteLine("hej");
+                if (_player.Position.X + _player.Radius > _wall1.Position.X - _wall1.Radius &&
+                    _player.Position.Y - _player.Radius < _wall1.Position.Y + _wall1.Radius &&
+                    _player.Position.Y + _player.Radius > _wall1.Position.Y - _wall1.Radius) {
+                        
                         _player.Position = new Vector2(_player.Position.Y, _wall1.Position.X - _wall1.Radius - _player.Radius);
                     }
                 } else {
-                    if (_player.Position.X - _player.Radius < _wall1.Position.X + _wall1.Radius) {
+                    if (_player.Position.X - _player.Radius < _wall1.Position.X + _wall1.Radius &&
+                        _player.Position.Y - _player.Radius < _wall1.Position.Y + _wall1.Radius &&
+                        _player.Position.Y + _player.Radius > _wall1.Position.Y - _wall1.Radius) {
                         _player.Position = new Vector2(_player.Position.Y, _wall1.Position.X + _wall1.Radius + _player.Radius);
                     }
                 }
-            }
+            
 
 
-            /*if (_player.Position.X < 500) {
-                if (_player.Position.X > 430 && _player.Position.Y < 320 && _player.Position.Y > 210) {
-                    _player.Position = new Vector2(430, _player.Position.Y);
-                }
-            } else {
-                if (_player.Position.X < 550 && _player.Position.Y < 350 && _player.Position.Y > 250) {
-                    _player.Position = new Vector2(550, _player.Position.Y);
-                } //det är fult
-            }*/
-
-            //rightwa
-
-            //top
-
-            //bottom
-
-            //objectBounds(_player, _wall1);
+            
             worldBounds(_player);
             _player.Update();
             base.Update(gameTime);
@@ -148,23 +141,5 @@ namespace throw_apple2 {
                 e.Position = new Vector2(e.Position.X, _screenHeight - e.Radius);
             }
         }
-        private void objectBounds(Entity a, Entity b) {
-            
-            if (a.Position.X + a.Radius < b.Position.X - b.Radius && 
-                a.Position.Y < b.Position.Y - b.Radius && 
-                a.Position.Y > b.Position.Y + b.Radius) {
-
-                
-                a.Position = new Vector2(b.Position.X + b.Radius, a.Position.Y);
-            } 
-            /*else if (a.Position.X + a.Radius > aw) {
-                a.Position = new Vector2(_screenWidth - a.Radius, a.Position.Y);
-            }
-            if (a.Position.Y - a.Radius < 0) {
-                a.Position = new Vector2(a.Position.X, 0 + a.Radius);
-            } else if (a.Position.Y > _screenHeight - a.Radius) {
-                a.Position = new Vector2(a.Position.X, _screenHeight - a.Radius);
-            }*/
-        } 
     }
 }
