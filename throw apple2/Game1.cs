@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.Diagnostics;
 
 namespace throw_apple2 {
     public class Game1 : Game {
@@ -74,27 +75,29 @@ namespace throw_apple2 {
             }*/
             if (_player.Position.X - _player.Radius < _wall1.Position.X + _wall1.Radius &&
                 _player.Position.X + _player.Radius > _wall1.Position.X - _wall1.Radius) {
+                //mitten av objektet i y led
                 if (_player.Position.Y < _wall1.Position.Y) {
                     if (_player.Position.Y + _player.Radius > _wall1.Position.Y - _wall1.Radius) {
                         _player.Position = new Vector2(_player.Position.X, _wall1.Position.Y - _wall1.Radius - _player.Radius);
                     }
-                } else{
-                    if (_player.Position.Y - _player.Radius < _wall1.Position.Y + _wall1.Radius &&
-                        _player.Position.X - _player.Radius < _wall1.Position.X + _wall1.Radius &&
-                        _player.Position.X + _player.Radius > _wall1.Position.X - _wall1.Radius) {
+                } else {
+                    if (_player.Position.Y - _player.Radius < _wall1.Position.Y + _wall1.Radius) {
                         _player.Position = new Vector2(_player.Position.X, _wall1.Position.Y + _wall1.Radius + _player.Radius);
                     }
                 }
+            }
+
+            //kolliderar i y led
+            if (_player.Position.Y - _player.Radius < _wall1.Position.Y + _wall1.Radius &&
+                _player.Position.Y + _player.Radius > _wall1.Position.Y - _wall1.Radius) {
+                //mitten av objektet i X led
+                Debug.WriteLine("hej");
                 if (_player.Position.X < _wall1.Position.X) {
-                    if (_player.Position.X + _player.Radius > _wall1.Position.X - _wall1.Radius &&
-                        _player.Position.Y - _player.Radius < _wall1.Position.Y + _wall1.Radius &&
-                        _player.Position.Y + _player.Radius > _wall1.Position.Y - _wall1.Radius) {
+                    if (_player.Position.X + _player.Radius > _wall1.Position.X - _wall1.Radius) {
                         _player.Position = new Vector2(_player.Position.Y, _wall1.Position.X - _wall1.Radius - _player.Radius);
                     }
                 } else {
-                    if (_player.Position.X - _player.Radius < _wall1.Position.X + _wall1.Radius &&
-                        _player.Position.Y - _player.Radius < _wall1.Position.Y + _wall1.Radius &&
-                        _player.Position.Y + _player.Radius > _wall1.Position.Y - _wall1.Radius) {
+                    if (_player.Position.X - _player.Radius < _wall1.Position.X + _wall1.Radius) {
                         _player.Position = new Vector2(_player.Position.Y, _wall1.Position.X + _wall1.Radius + _player.Radius);
                     }
                 }
