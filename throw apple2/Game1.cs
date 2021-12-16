@@ -72,27 +72,45 @@ namespace throw_apple2 {
             } else if (true) {
 
             }*/
-            if (_player.Position.Y < 300) {
-                if (_player.Position.Y > 210 && _player.Position.X < 550 && _player.Position.X > 450) {
-                    _player.Position = new Vector2(_player.Position.X, 210);
+            if (_player.Position.X - _player.Radius < _wall1.Position.X + _wall1.Radius &&
+                _player.Position.X + _player.Radius > _wall1.Position.X - _wall1.Radius) {
+                if (_player.Position.Y < _wall1.Position.Y) {
+                    if (_player.Position.Y + _player.Radius > _wall1.Position.Y - _wall1.Radius) {
+                        _player.Position = new Vector2(_player.Position.X, _wall1.Position.Y - _wall1.Radius - _player.Radius);
+                    }
+                } else{
+                    if (_player.Position.Y - _player.Radius < _wall1.Position.Y + _wall1.Radius &&
+                        _player.Position.X - _player.Radius < _wall1.Position.X + _wall1.Radius &&
+                        _player.Position.X + _player.Radius > _wall1.Position.X - _wall1.Radius) {
+                        _player.Position = new Vector2(_player.Position.X, _wall1.Position.Y + _wall1.Radius + _player.Radius);
+                    }
                 }
-            } else{
-                if (_player.Position.Y < 400 && _player.Position.X > 450 && _player.Position.X < 550) {
-                    _player.Position = new Vector2(_player.Position.X, 400);
+                if (_player.Position.X < _wall1.Position.X) {
+                    if (_player.Position.X + _player.Radius > _wall1.Position.X - _wall1.Radius &&
+                        _player.Position.Y - _player.Radius < _wall1.Position.Y + _wall1.Radius &&
+                        _player.Position.Y + _player.Radius > _wall1.Position.Y - _wall1.Radius) {
+                        _player.Position = new Vector2(_player.Position.Y, _wall1.Position.X - _wall1.Radius - _player.Radius);
+                    }
+                } else {
+                    if (_player.Position.X - _player.Radius < _wall1.Position.X + _wall1.Radius &&
+                        _player.Position.Y - _player.Radius < _wall1.Position.Y + _wall1.Radius &&
+                        _player.Position.Y + _player.Radius > _wall1.Position.Y - _wall1.Radius) {
+                        _player.Position = new Vector2(_player.Position.Y, _wall1.Position.X + _wall1.Radius + _player.Radius);
+                    }
                 }
             }
 
 
-            if (_player.Position.X < 500) {
+            /*if (_player.Position.X < 500) {
                 if (_player.Position.X > 430 && _player.Position.Y < 320 && _player.Position.Y > 210) {
                     _player.Position = new Vector2(430, _player.Position.Y);
                 }
             } else {
                 if (_player.Position.X < 550 && _player.Position.Y < 350 && _player.Position.Y > 250) {
                     _player.Position = new Vector2(550, _player.Position.Y);
-                }
-            }
-            
+                } //det är fult
+            }*/
+
             //rightwa
 
             //top
