@@ -21,14 +21,15 @@ namespace throw_apple2 {
             _radius = _texture.Width / 2;
             _color = Color.White;
             _isAlive = true;
-
-
+            _downSide = _texture.Height;
+            _upSide = (int)-_radius;
+            _leftSide = (int)-_radius;
+            _rightSide = _texture.Width;
         }
 
         public virtual void Update() {
             Position += _velocity;
         }
-
 
         public Rectangle getRectangle() {
             return new Rectangle(_position.ToPoint(), new Point((int)_radius * 2, (int)_radius * 2));
@@ -44,5 +45,9 @@ namespace throw_apple2 {
         public Vector2 Position { get => _position; set => _position = value; }
         public Vector2 Velocity { get => _velocity; set => _velocity = value; }
         public bool IsAlive { get => _isAlive; set => _isAlive = value; }
+        public int UpSide { get => _upSide; set => _upSide = value; }
+        public int RightSide { get => _rightSide; set => _rightSide = value; }
+        public int LeftSide { get => _leftSide; set => _leftSide = value; }
+        public int DownSide { get => _downSide; set => _downSide = value; }
     }
 }
