@@ -11,7 +11,7 @@ namespace throw_apple2 {
         private int _screenWidth, _screenHeight, _screenCenterY, _screenCenterX;
         private Player _player;
         private Wall _wall1;
-        private int playerRadius = 20;
+        private int playerHalfWidth = 20;
         //d
         public Game1() {
             _graphics = new GraphicsDeviceManager(this);
@@ -37,7 +37,7 @@ namespace throw_apple2 {
             _wall1 = new Wall(this, "wall1", new Vector2(_screenCenterX, _screenCenterY));
 
             _player = new Player(this, "redHatRotated", new Vector2(0, 0));
-            _player.Radius = playerRadius;
+            _player.HalfWidth = playerHalfWidth;
             // TODO: use this.Content to load your game content here
         }
 
@@ -76,38 +76,37 @@ namespace throw_apple2 {
             }*/
             
                 //mitten av objektet i y led
+                
                 if (_player.Position.Y < _wall1.Position.Y) {
-                    if (_player.Position.Y + _player.Radius > _wall1.Position.Y - _wall1.Radius &&
-                        _player.Position.X - _player.Radius < _wall1.Position.X + _wall1.Radius &&
-                        _player.Position.X + _player.Radius > _wall1.Position.X - _wall1.Radius) {
-                        _player.Position = new Vector2(_player.Position.X, _wall1.Position.Y - _wall1.Radius - _player.Radius);
+                    if (_player.Position.Y + _player.HalfWidth > _wall1.Position.Y - _wall1.HalfWidth &&
+                        _player.Position.X - _player.HalfWidth < _wall1.Position.X + _wall1.HalfWidth &&
+                        _player.Position.X + _player.HalfWidth > _wall1.Position.X - _wall1.HalfWidth) {
+                        _player.Position = new Vector2(_player.Position.X, _wall1.Position.Y - _wall1.HalfWidth - _player.HalfWidth);
                     }
                 } else {
-                    if (_player.Position.Y - _player.Radius < _wall1.Position.Y + _wall1.Radius &&
-                        _player.Position.X - _player.Radius < _wall1.Position.X + _wall1.Radius &&
-                        _player.Position.X + _player.Radius > _wall1.Position.X - _wall1.Radius) {
-                        _player.Position = new Vector2(_player.Position.X, _wall1.Position.Y + _wall1.Radius + _player.Radius);
+                    if (_player.Position.Y - _player.HalfWidth < _wall1.Position.Y + _wall1.HalfWidth &&
+                        _player.Position.X - _player.HalfWidth < _wall1.Position.X + _wall1.HalfWidth &&
+                        _player.Position.X + _player.HalfWidth > _wall1.Position.X - _wall1.HalfWidth) {
+                        _player.Position = new Vector2(_player.Position.X, _wall1.Position.Y + _wall1.HalfWidth + _player.HalfWidth);
                     }
                 }
-            
-
             //kolliderar i y led
             
                 //mitten av objektet i X led
                 
                 if (_player.Position.X < _wall1.Position.X) {
                 Debug.WriteLine("hej");
-                if (_player.Position.X + _player.Radius > _wall1.Position.X - _wall1.Radius &&
-                    _player.Position.Y - _player.Radius < _wall1.Position.Y + _wall1.Radius &&
-                    _player.Position.Y + _player.Radius > _wall1.Position.Y - _wall1.Radius) {
+                if (_player.Position.X + _player.HalfWidth > _wall1.Position.X - _wall1.HalfWidth &&
+                    _player.Position.Y - _player.HalfWidth < _wall1.Position.Y + _wall1.HalfWidth &&
+                    _player.Position.Y + _player.HalfWidth > _wall1.Position.Y - _wall1.HalfWidth) {
                         
-                        _player.Position = new Vector2(_player.Position.Y, _wall1.Position.X - _wall1.Radius - _player.Radius);
+                        _player.Position = new Vector2(_player.Position.Y, _wall1.Position.X - _wall1.HalfWidth - _player.HalfWidth);
                     }
                 } else {
-                    if (_player.Position.X - _player.Radius < _wall1.Position.X + _wall1.Radius &&
-                        _player.Position.Y - _player.Radius < _wall1.Position.Y + _wall1.Radius &&
-                        _player.Position.Y + _player.Radius > _wall1.Position.Y - _wall1.Radius) {
-                        _player.Position = new Vector2(_player.Position.Y, _wall1.Position.X + _wall1.Radius + _player.Radius);
+                    if (_player.Position.X - _player.HalfWidth < _wall1.Position.X + _wall1.HalfWidth &&
+                        _player.Position.Y - _player.HalfWidth < _wall1.Position.Y + _wall1.HalfWidth &&
+                        _player.Position.Y + _player.HalfWidth > _wall1.Position.Y - _wall1.HalfWidth) {
+                        _player.Position = new Vector2(_player.Position.Y, _wall1.Position.X + _wall1.HalfWidth + _player.HalfWidth);
                     }
                 }
             
@@ -130,15 +129,15 @@ namespace throw_apple2 {
         
 
         private void worldBounds(Entity e) {
-            if (e.Position.X - e.Radius < 0) {
-                e.Position = new Vector2(e.Radius, e.Position.Y);
-            } else if (e.Position.X + e.Radius > _screenWidth) {
-                e.Position = new Vector2(_screenWidth - e.Radius, e.Position.Y);
+            if (e.Position.X - e.HalfWidth < 0) {
+                e.Position = new Vector2(e.HalfWidth, e.Position.Y);
+            } else if (e.Position.X + e.HalfWidth > _screenWidth) {
+                e.Position = new Vector2(_screenWidth - e.HalfWidth, e.Position.Y);
             }
-            if (e.Position.Y - e.Radius < 0) {
-                e.Position = new Vector2(e.Position.X, 0 + e.Radius);
-            } else if (e.Position.Y > _screenHeight - e.Radius) {
-                e.Position = new Vector2(e.Position.X, _screenHeight - e.Radius);
+            if (e.Position.Y - e.HalfWidth < 0) {
+                e.Position = new Vector2(e.Position.X, 0 + e.HalfWidth);
+            } else if (e.Position.Y > _screenHeight - e.HalfWidth) {
+                e.Position = new Vector2(e.Position.X, _screenHeight - e.HalfWidth);
             }
         }
     }
