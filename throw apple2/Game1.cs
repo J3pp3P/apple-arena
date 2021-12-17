@@ -11,8 +11,7 @@ namespace throw_apple2 {
         private int _screenWidth, _screenHeight, _screenCenterY, _screenCenterX;
         private Player _player;
         private Wall _wall1;
-        private int playerHalfWidth = 20;
-        //d
+        private int _playerSize = 100;
         public Game1() {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -36,8 +35,8 @@ namespace throw_apple2 {
 
             _wall1 = new Wall(this, "wall1", new Vector2(_screenCenterX, _screenCenterY));
 
-            _player = new Player(this, "redHatRotated", new Vector2(0, 0));
-            _player.HalfWidth = playerHalfWidth;
+            _player = new Player(this, "player1", new Vector2(0, 0));
+            _player.Size(20);
             // TODO: use this.Content to load your game content here
         }
 
@@ -68,47 +67,58 @@ namespace throw_apple2 {
             }
 
             //wallcollision
-            /*left
-            if (_player.Position.X > _wall1.LeftSide && _player.Position.Y < _wall1.UpSide && _player.Position.Y < _wall1.DownSide) {
-                _player.Position = new Vector2(_wall1.LeftSide, _player.Position.Y);
-            } else if (true) {
 
-            }*/
-            
-                //mitten av objektet i y led
+            if (_player.Position.Y + _player.HalfHeight > _wall1.Position.Y - _wall1.HalfHeight &&
+                _player.Position.Y - _player.HalfHeight < _wall1.Position.Y + _wall1.HalfHeight &&
+                _player.Position.X + _player.HalfWidth > _wall1.Position.X - _wall1.HalfWidth &&
+                _player.Position.X - _player.HalfWidth < _wall1.Position.X + _wall1.HalfWidth) {
+                double angle = _wall1.playerAngle(_player);
+                double cornerAngle = _wall1.cornerAngle();
                 
-                if (_player.Position.Y < _wall1.Position.Y) {
-                    if (_player.Position.Y + _player.HalfWidth > _wall1.Position.Y - _wall1.HalfWidth &&
-                        _player.Position.X - _player.HalfWidth < _wall1.Position.X + _wall1.HalfWidth &&
-                        _player.Position.X + _player.HalfWidth > _wall1.Position.X - _wall1.HalfWidth) {
-                        _player.Position = new Vector2(_player.Position.X, _wall1.Position.Y - _wall1.HalfWidth - _player.HalfWidth);
-                    }
-                } else {
-                    if (_player.Position.Y - _player.HalfWidth < _wall1.Position.Y + _wall1.HalfWidth &&
-                        _player.Position.X - _player.HalfWidth < _wall1.Position.X + _wall1.HalfWidth &&
-                        _player.Position.X + _player.HalfWidth > _wall1.Position.X - _wall1.HalfWidth) {
-                        _player.Position = new Vector2(_player.Position.X, _wall1.Position.Y + _wall1.HalfWidth + _player.HalfWidth);
-                    }
+                if (angle > cornerAngle && angle < Math.PI - cornerAngle) {
+                    _player.Position = new Vector2(_player.Position.X, _wall1.Position.Y - _wall1.HalfWidth - _player.HalfWidth);
+                    
+                } else if (angle > Math.PI - cornerAngle || angle < cornerAngle - Math.PI ) {
+                    _player.Position = new Vector2(_wall1.Position.X - _wall1.HalfWidth - _player.HalfWidth, _player.Position.Y);
+                    Debug.WriteLine(angle);
+                } else if (angle < -cornerAngle && angle >  cornerAngle - Math.PI) {
+                    _player.Position = new Vector2(_player.Position.X, _wall1.Position.Y + _wall1.HalfWidth + _player.HalfWidth);
+                } else if (angle < cornerAngle && angle > -cornerAngle) {
+                    _player.Position = new Vector2(_wall1.Position.X + _wall1.HalfWidth + _player.HalfWidth, _player.Position.Y);
                 }
-            //kolliderar i y led
-            
-                //mitten av objektet i X led
+            }
+
+
+
+            /*
+            if (_player.Position.Y < _wall1.Position.Y) {
+                if (_player.Position.Y + _player.HalfWidth > _wall1.Position.Y - _wall1.HalfWidth &&
+                    _player.Position.X - _player.HalfWidth < _wall1.Position.X + _wall1.HalfWidth &&
+                    _player.Position.X + _player.HalfWidth > _wall1.Position.X - _wall1.HalfWidth) {
+                    _player.Position = new Vector2(_player.Position.X, _wall1.Position.Y - _wall1.HalfWidth - _player.HalfWidth);
+                }
+            } else {
+                if (_player.Position.Y - _player.HalfWidth < _wall1.Position.Y + _wall1.HalfWidth &&
+                    _player.Position.X - _player.HalfWidth < _wall1.Position.X + _wall1.HalfWidth &&
+                    _player.Position.X + _player.HalfWidth > _wall1.Position.X - _wall1.HalfWidth) {
+                    _player.Position = new Vector2(_player.Position.X, _wall1.Position.Y + _wall1.HalfWidth + _player.HalfWidth);
+                }
+            }
                 
-                if (_player.Position.X < _wall1.Position.X) {
-                Debug.WriteLine("hej");
-                if (_player.Position.X + _player.HalfWidth > _wall1.Position.X - _wall1.HalfWidth &&
+            if (_player.Position.X < _wall1.Position.X) {
+            if (_player.Position.X + _player.HalfWidth > _wall1.Position.X - _wall1.HalfWidth &&
+                _player.Position.Y - _player.HalfWidth < _wall1.Position.Y + _wall1.HalfWidth &&
+                _player.Position.Y + _player.HalfWidth > _wall1.Position.Y - _wall1.HalfWidth) {
+                        
+                    _player.Position = new Vector2(_player.Position.Y, _wall1.Position.X - _wall1.HalfWidth - _player.HalfWidth);
+                }
+            } else {
+                if (_player.Position.X - _player.HalfWidth < _wall1.Position.X + _wall1.HalfWidth &&
                     _player.Position.Y - _player.HalfWidth < _wall1.Position.Y + _wall1.HalfWidth &&
                     _player.Position.Y + _player.HalfWidth > _wall1.Position.Y - _wall1.HalfWidth) {
-                        
-                        _player.Position = new Vector2(_player.Position.Y, _wall1.Position.X - _wall1.HalfWidth - _player.HalfWidth);
-                    }
-                } else {
-                    if (_player.Position.X - _player.HalfWidth < _wall1.Position.X + _wall1.HalfWidth &&
-                        _player.Position.Y - _player.HalfWidth < _wall1.Position.Y + _wall1.HalfWidth &&
-                        _player.Position.Y + _player.HalfWidth > _wall1.Position.Y - _wall1.HalfWidth) {
-                        _player.Position = new Vector2(_player.Position.Y, _wall1.Position.X + _wall1.HalfWidth + _player.HalfWidth);
-                    }
+                    _player.Position = new Vector2(_player.Position.Y, _wall1.Position.X + _wall1.HalfWidth + _player.HalfWidth);
                 }
+            }*/
             
 
 

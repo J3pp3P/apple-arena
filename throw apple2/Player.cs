@@ -28,6 +28,10 @@ namespace throw_apple2 {
             }
             base.Update();
         }
+        public void Size(int s) {         
+            HalfHeight = s;
+            HalfWidth = s;
+        }
         public bool Forward { get => _forward; set => _forward = value; }
         public float Speed { get => _speed; set => _speed = value; }
         public bool Back { get => _back; set => _back = value; }

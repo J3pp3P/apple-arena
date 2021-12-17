@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-
+using System;
 
 namespace throw_apple2 {
     class Entity {
@@ -9,12 +9,8 @@ namespace throw_apple2 {
         protected Texture2D _texture;
         protected Color _color;
         protected float _halfWidth;
-        private float _halfHeight;
+        protected float _halfHeight;
         protected bool _isAlive;
-        private int _downSide;
-        private int _leftSide;
-        private int _rightSide;
-        private int _upSide;
 
         public Entity(Game game, string texturename, Vector2 position) {
             _position = position;
@@ -23,10 +19,6 @@ namespace throw_apple2 {
             _halfHeight = _texture.Height / 2;
             _color = Color.White;
             _isAlive = true;
-            _downSide = _texture.Height;
-            _upSide = (int)-_halfWidth;
-            _leftSide = (int)-_halfWidth;
-            _rightSide = _texture.Width;
         }
 
         public virtual void Update() {
@@ -34,10 +26,10 @@ namespace throw_apple2 {
         }
 
         public Rectangle getRectangle() {
-            return new Rectangle(_position.ToPoint(), new Point((int)_halfWidth * 2, (int)_halfWidth * 2));
+            return new Rectangle(_position.ToPoint(), new Point((int)_halfWidth * 2, (int)_halfHeight * 2));
         }
         public Vector2 getCenter() {
-            return new Vector2(_halfWidth, _halfWidth);
+            return new Vector2(_halfWidth, _halfHeight);
         }
 
         public float HalfWidth { get => _halfWidth; set => _halfWidth = value; }
@@ -47,10 +39,6 @@ namespace throw_apple2 {
         public Vector2 Position { get => _position; set => _position = value; }
         public Vector2 Velocity { get => _velocity; set => _velocity = value; }
         public bool IsAlive { get => _isAlive; set => _isAlive = value; }
-        public int UpSide { get => _upSide; set => _upSide = value; }
-        public int RightSide { get => _rightSide; set => _rightSide = value; }
-        public int LeftSide { get => _leftSide; set => _leftSide = value; }
-        public int DownSide { get => _downSide; set => _downSide = value; }
-        protected float HalfHeight { get => _halfHeight; set => _halfHeight = value; }
+        public float HalfHeight { get => _halfHeight; set => _halfHeight = value; }
     }
 }
