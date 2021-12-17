@@ -9,7 +9,7 @@ namespace throw_apple2 {
 
         public Player(Game game, string texturename, Vector2 position) : base(game, texturename, position) {
             _rotation = -MathHelper.Pi / 2;
-            _speed = 3f;
+            _speed = 2f;
         }
 
         public override void Update() {
@@ -32,6 +32,11 @@ namespace throw_apple2 {
             HalfHeight = s;
             HalfWidth = s;
         }
+        /*public override Rectangle getRectangle() {
+            HalfHeight = 20;
+            HalfWidth = 20;
+            return new Rectangle(_position.ToPoint(), new Point(20, 20));
+        }*/
         public bool Forward { get => _forward; set => _forward = value; }
         public float Speed { get => _speed; set => _speed = value; }
         public bool Back { get => _back; set => _back = value; }

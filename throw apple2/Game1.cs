@@ -11,7 +11,7 @@ namespace throw_apple2 {
         private int _screenWidth, _screenHeight, _screenCenterY, _screenCenterX;
         private Player _player;
         private Wall _wall1;
-        private int _playerSize = 100;
+        private int _playerSize = 20;
         public Game1() {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -36,7 +36,7 @@ namespace throw_apple2 {
             _wall1 = new Wall(this, "wall1", new Vector2(_screenCenterX, _screenCenterY));
 
             _player = new Player(this, "player1", new Vector2(0, 0));
-            _player.Size(20);
+            //_player.Size(_playerSize);
             // TODO: use this.Content to load your game content here
         }
 
@@ -76,21 +76,19 @@ namespace throw_apple2 {
                 double cornerAngle = _wall1.cornerAngle();
                 
                 if (angle > cornerAngle && angle < Math.PI - cornerAngle) {
-                    _player.Position = new Vector2(_player.Position.X, _wall1.Position.Y - _wall1.HalfWidth - _player.HalfWidth);
+                    _player.Position = new Vector2(_player.Position.X, _wall1.Position.Y - _wall1.HalfHeight - _player.HalfHeight);
                     
                 } else if (angle > Math.PI - cornerAngle || angle < cornerAngle - Math.PI ) {
                     _player.Position = new Vector2(_wall1.Position.X - _wall1.HalfWidth - _player.HalfWidth, _player.Position.Y);
                     Debug.WriteLine(angle);
                 } else if (angle < -cornerAngle && angle >  cornerAngle - Math.PI) {
-                    _player.Position = new Vector2(_player.Position.X, _wall1.Position.Y + _wall1.HalfWidth + _player.HalfWidth);
+                    _player.Position = new Vector2(_player.Position.X, _wall1.Position.Y + _wall1.HalfHeight + _player.HalfHeight);
                 } else if (angle < cornerAngle && angle > -cornerAngle) {
                     _player.Position = new Vector2(_wall1.Position.X + _wall1.HalfWidth + _player.HalfWidth, _player.Position.Y);
                 }
             }
 
-
-
-            /*
+            /*helig
             if (_player.Position.Y < _wall1.Position.Y) {
                 if (_player.Position.Y + _player.HalfWidth > _wall1.Position.Y - _wall1.HalfWidth &&
                     _player.Position.X - _player.HalfWidth < _wall1.Position.X + _wall1.HalfWidth &&
@@ -119,10 +117,6 @@ namespace throw_apple2 {
                     _player.Position = new Vector2(_player.Position.Y, _wall1.Position.X + _wall1.HalfWidth + _player.HalfWidth);
                 }
             }*/
-            
-
-
-            
             worldBounds(_player);
             _player.Update();
             base.Update(gameTime);

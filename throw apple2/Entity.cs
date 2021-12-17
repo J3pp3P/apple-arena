@@ -25,7 +25,7 @@ namespace throw_apple2 {
             Position += _velocity;
         }
 
-        public Rectangle getRectangle() {
+        virtual public Rectangle getRectangle() {
             return new Rectangle(_position.ToPoint(), new Point((int)_halfWidth * 2, (int)_halfHeight * 2));
         }
         public Vector2 getCenter() {
