@@ -31,6 +31,12 @@ namespace throw_apple2 {
         public Vector2 getCenter() {
             return new Vector2(_halfWidth, _halfHeight);
         }
+        /*public double playerAngle(Entity a, Entity b){
+            return Math.Atan2(b.Position.Y - a.Position.Y, a.Position.X - b.Position.X);
+        }
+        public double cornerAngle(Entity a){
+            return Math.Atan2(a.HalfHeight, a.HalfWidth);
+        }*/
 
         public float HalfWidth { get => _halfWidth; set => _halfWidth = value; }
         public Color Color { get => _color; set => _color = value; }
