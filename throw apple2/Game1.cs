@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
-using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace throw_apple2 {
     public class Game1 : Game {
@@ -11,8 +11,11 @@ namespace throw_apple2 {
         private SpriteBatch _spriteBatch;
         private int _screenWidth, _screenHeight, _screenCenterY, _screenCenterX;
         private Player _player1, _player2;
+        private List<Wall> _walls = new List<Wall>();
         private Wall _wall1;
-        private int _playerSize = 20;
+        private Wall _wall2;
+        private Wall _wall3;
+        private Wall _wall4;
         public Game1() {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -34,10 +37,15 @@ namespace throw_apple2 {
         protected override void LoadContent() {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            _wall1 = new Wall(this, "wall1", new Vector2(_screenCenterX, _screenCenterY));
+            _wall1 = new Wall(this, "storträd", new Vector2(_screenCenterX, _screenCenterY));
+            
+            _wall2 = new Wall(this, "hinder2", new Vector2(0, 0));
+            _wall2.Position = new Vector2(100, _screenHeight - _wall2.HalfHeight);
+            _walls.Add(_wall1);
+            _walls.Add(_wall2);
 
-            _player1 = new Player(this, "player1", new Vector2(0, 0));
-            _player2 = new Player(this, "player2", new Vector2(_screenWidth, 0));
+            _player1 = new Player(this, "rcap", new Vector2(0, 0));
+            _player2 = new Player(this, "gcap", new Vector2(_screenWidth, 0));
             //_player.Size(_playerSize);
             // TODO: use this.Content to load your game content here
         }
@@ -47,10 +55,9 @@ namespace throw_apple2 {
             
 
             move(_player1, _player2);
-            collision(_wall1, _player1);
-            collision(_wall1, _player2);
+            collision(_walls, _player1);
+            collision(_walls, _player2);
             playerCollision(_player2, _player1);
-            playerCollision(_player1, _player2);
             worldBounds(_player1);
             worldBounds(_player2);
             _player1.Update();
@@ -63,7 +70,9 @@ namespace throw_apple2 {
             _spriteBatch.Begin();
             _spriteBatch.Draw(_player1.Texture, _player1.getRectangle(), null, _player1.Color, _player1.Rotation, _player1.getCenter(), SpriteEffects.None, 0f);
             _spriteBatch.Draw(_player2.Texture, _player2.getRectangle(), null, _player2.Color, _player2.Rotation, _player2.getCenter(), SpriteEffects.None, 0f);
-            _spriteBatch.Draw(_wall1.Texture, _wall1.getRectangle(), null, _wall1.Color, _wall1.Rotation, _wall1.getCenter(), SpriteEffects.None, 0f);
+            for (int i = 0; i < _walls.Count; i++) {
+                _spriteBatch.Draw(_walls[i].Texture, _walls[i].getRectangle(), null, _walls[i].Color, _walls[i].Rotation, _walls[i].getCenter(), SpriteEffects.None, 0f);
+            }
             _spriteBatch.End();
             base.Draw(gameTime);
         }
@@ -126,30 +135,32 @@ namespace throw_apple2 {
                 e.Position = new Vector2(e.Position.X, _screenHeight - e.HalfWidth);
             }
         }
-        private void collision(Wall a, Player b)
+        private void collision(List<Wall> wall, Player b)
         {
-            if (b.Position.Y + b.HalfHeight > a.Position.Y - a.HalfHeight &&
-                b.Position.Y - b.HalfHeight < a.Position.Y + a.HalfHeight &&
-                b.Position.X + b.HalfWidth > a.Position.X - a.HalfWidth &&
-                b.Position.X - b.HalfWidth < a.Position.X + a.HalfWidth) {
-                double angle = a.playerAngle(b);
-                double cornerAngle = a.cornerAngle();
+            for (int i = 0; i < wall.Count; i++) {
+                if (b.Position.Y + b.HalfHeight > wall[i].Position.Y - wall[i].HalfHeight &&
+                    b.Position.Y - b.HalfHeight < wall[i].Position.Y + wall[i].HalfHeight &&
+                    b.Position.X + b.HalfWidth > wall[i].Position.X - wall[i].HalfWidth &&
+                    b.Position.X - b.HalfWidth < wall[i].Position.X + wall[i].HalfWidth) {
+                    double angle = wall[i].playerAngle(b);
+                    double cornerAngle = wall[i].cornerAngle();
 
-                //krockar från ovansidan
-                if (angle > cornerAngle && angle < Math.PI - cornerAngle) {
-                    b.Position = new Vector2(b.Position.X, a.Position.Y - a.HalfHeight - b.HalfHeight);
-                }
-                //krokar från vänster sida
-                else if (angle > Math.PI - cornerAngle || angle < cornerAngle - Math.PI) {
-                    b.Position = new Vector2(a.Position.X - a.HalfWidth - b.HalfWidth, b.Position.Y);
-                }
-                //krockar från nedansidan
-                else if (angle < -cornerAngle && angle >  cornerAngle - Math.PI) {
-                    b.Position = new Vector2(b.Position.X, a.Position.Y + a.HalfHeight + b.HalfHeight);
-                }
-                //krockar från höger sida
-                else if (angle < cornerAngle && angle > -cornerAngle) {
-                    b.Position = new Vector2(a.Position.X + a.HalfWidth + b.HalfWidth, b.Position.Y);
+                    //krockar från ovansidan
+                    if (angle > cornerAngle && angle < Math.PI - cornerAngle) {
+                        b.Position = new Vector2(b.Position.X, wall[i].Position.Y - wall[i].HalfHeight - b.HalfHeight);
+                    }
+                    //krokar från vänster sida
+                    else if (angle > Math.PI - cornerAngle || angle < cornerAngle - Math.PI) {
+                        b.Position = new Vector2(wall[i].Position.X - wall[i].HalfWidth - b.HalfWidth, b.Position.Y);
+                    }
+                    //krockar från nedansidan
+                    else if (angle < -cornerAngle && angle >  cornerAngle - Math.PI) {
+                        b.Position = new Vector2(b.Position.X, wall[i].Position.Y + wall[i].HalfHeight + b.HalfHeight);
+                    }
+                    //krockar från höger sida
+                    else if (angle < cornerAngle && angle > -cornerAngle) {
+                        b.Position = new Vector2(wall[i].Position.X + wall[i].HalfWidth + b.HalfWidth, b.Position.Y);
+                    }
                 }
             }
         }
@@ -208,13 +219,7 @@ namespace throw_apple2 {
                             p1.Position = new Vector2(p2.Position.X + p2.HalfWidth + p1.HalfWidth, p1.Position.Y);
                         }
                     }
-                    
-
-                    
-                   
-                    
                 }
-
             }
         }
     }
