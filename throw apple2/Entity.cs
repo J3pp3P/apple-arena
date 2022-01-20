@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+﻿    using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 
@@ -11,6 +11,7 @@ namespace throw_apple2 {
         protected float _halfWidth;
         protected float _halfHeight;
         protected bool _isAlive;
+        protected float _speed;
 
         public Entity(Game game, string texturename, Vector2 position) {
             _position = position;
