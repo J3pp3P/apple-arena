@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -176,23 +177,42 @@ namespace throw_apple2 {
                     else if (angle < cornerAngle && angle > -cornerAngle) {
                         p2.Position = new Vector2(p1.Position.X + p1.HalfWidth + p2.HalfWidth, p2.Position.Y);
                     }
-                } else if(p2.Velocity.X == 0 || p2.Velocity.Y == 0) {
-                    //krockar från ovansidan
-                    if (angle > cornerAngle && angle < Math.PI - cornerAngle) {
-                        p1.Position = new Vector2(p1.Position.X, p2.Position.Y - p2.HalfHeight - p1.HalfHeight);
+                }
+
+                //fixade kollision (typ)
+
+                if (distance < p1.HalfHeight + p2.HalfHeight)
+                {
+                    double angle2 = p2.playerAngle(p1);
+                    double cornerAngle2 = Math.PI / 4;
+                    if (p2.Velocity.X == 0 || p2.Velocity.Y == 0)
+                    {
+                        //krockar från ovansidan
+                        if (angle2 > cornerAngle && angle < Math.PI - cornerAngle2)
+                        {
+                            p1.Position = new Vector2(p1.Position.X, p2.Position.Y - p2.HalfHeight - p1.HalfHeight);
+                        }
+                        //krokar från vänster sida
+                        else if (angle2 > Math.PI - cornerAngle2|| angle2 < cornerAngle2 - Math.PI)
+                        {
+                            p1.Position = new Vector2(p2.Position.X - p2.HalfWidth - p1.HalfWidth, p1.Position.Y);
+                        }
+                        //krockar från nedansidan
+                        else if (angle2 < -cornerAngle2 && angle > cornerAngle2 - Math.PI)
+                        {
+                            p1.Position = new Vector2(p1.Position.X, p2.Position.Y + p2.HalfHeight + p1.HalfHeight);
+                        }
+                        //krockar från höger sida
+                        else if (angle2 < cornerAngle2 && angle > -cornerAngle2)
+                        {
+                            p1.Position = new Vector2(p2.Position.X + p2.HalfWidth + p1.HalfWidth, p1.Position.Y);
+                        }
                     }
-                    //krokar från vänster sida
-                    else if (angle > Math.PI - cornerAngle || angle < cornerAngle - Math.PI) {
-                        p1.Position = new Vector2(p2.Position.X - p2.HalfWidth - p1.HalfWidth, p1.Position.Y);
-                    }
-                    //krockar från nedansidan
-                    else if (angle < -cornerAngle && angle >  cornerAngle - Math.PI) {
-                        p1.Position = new Vector2(p1.Position.X, p2.Position.Y + p2.HalfHeight + p1.HalfHeight);
-                    }
-                    //krockar från höger sida
-                    else if (angle < cornerAngle && angle > -cornerAngle) {
-                        p1.Position = new Vector2(p2.Position.X + p2.HalfWidth + p1.HalfWidth, p1.Position.Y);
-                    }
+                    
+
+                    
+                   
+                    
                 }
 
             }

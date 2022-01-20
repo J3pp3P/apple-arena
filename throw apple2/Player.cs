@@ -5,7 +5,6 @@ namespace throw_apple2 {
     class Player : Entity {
         private bool _forward;
         private bool _back;
-        private bool _Playercollision;
         private float _speed = 0.4f;
 
         public Player(Game game, string texturename, Vector2 position) : base(game, texturename, position) {
@@ -37,6 +36,7 @@ namespace throw_apple2 {
         {
             return Math.Atan2(Position.Y - a.Position.Y, a.Position.X - Position.X);
         }
+        
         public double cornerAngle()
         {
             return Math.Atan2(HalfHeight, HalfWidth);
