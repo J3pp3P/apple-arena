@@ -9,19 +9,20 @@ namespace throw_apple2
     
     class Apple : Entity {
         Vector2 _direction;
-        public int _speed;
+        private int _speed;
 
-        public Apple(Game game, string texturename, Vector2 position) : base(game, texturename, position) {
-            _speed = 2;
+        public Apple(Game game, string texturename, Vector2 position, int speed) : base(game, texturename, position) {
+            Speed = speed;
         }
 
         public override void Update()
         {
-            float aX = MathF.Cos(_rotation) * _speed;
-            float aY = MathF.Sin(_rotation) * _speed;
+            float aX = MathF.Cos(_rotation) * Speed;
+            float aY = MathF.Sin(_rotation) * Speed;
                 _velocity = new Vector2(aX, aY);
             base.Update();
         }
         public Vector2 Direction { get => _direction; set => _direction = value; }
+        public int Speed { get => _speed; set => _speed=value; }
     }
 }

@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace throw_apple2 {
     public class Game1 : Game {
@@ -14,7 +15,8 @@ namespace throw_apple2 {
         private List<Wall> _walls = new List<Wall>();
         private List<Apple> _redApples = new List<Apple>();
         private List<Apple> _greenApples = new List<Apple>();
-        private int _antalApplen = 3;
+        private int _antalApplen = 300;
+        private int _appleSpeed = 4;
         private Wall _wall1;
         private Wall _wall2;
         private Wall _wall3;
@@ -39,8 +41,8 @@ namespace throw_apple2 {
         protected override void LoadContent() {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            //walls
             _wall1 = new Wall(this, "storträd", new Vector2(_screenCenterX, _screenCenterY));
-            
             _wall2 = new Wall(this, "hinder2", new Vector2(0, 0));
             _wall2.Position = new Vector2(100, _screenHeight - _wall2.HalfHeight);
             _wall3 = new Wall(this, "hinder2", new Vector2(0, 0));
@@ -50,35 +52,62 @@ namespace throw_apple2 {
             _walls.Add(_wall2);
             _walls.Add(_wall3);
 
+            //players
             _player1 = new Player(this, "rcap", new Vector2(0, _screenHeight));
             _player2 = new Player(this, "gcap", new Vector2(_screenWidth, 0));
 
             //redApple
             for (int i = 0; i < _antalApplen; i++) {
-                Apple tempApple = new Apple(this, "träd", new Vector2(_player1.Position.X, _player1.Position.Y));
+                Apple tempApple = new Apple(this, "redapple", new Vector2(_player1.Position.X, _player1.Position.Y), _appleSpeed);
+                tempApple.IsAlive = false;
                 _redApples.Add(tempApple);
             }
-
+            for (int i = 0; i < _antalApplen; i++) {
+                Apple tempApple = new Apple(this, "greenapple", new Vector2(_player1.Position.X, _player1.Position.Y), _appleSpeed);
+                tempApple.IsAlive = false;
+                _greenApples.Add(tempApple);
+            }
 
         }
 
         protected override void Update(GameTime gameTime) {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))Exit();
-            KeyboardState _ks = Keyboard.GetState();
-            
 
-            if (_ks.IsKeyDown(Keys.Space)) {
+            KeyboardElite.GetState();
+            //red apples
+            if (KeyboardElite.HasBeenPressed(Keys.Space)) {
+                Debug.WriteLine("key press");
                 foreach (Apple a in _redApples) {
-                    if (a.IsAlive) {
+                    if (!a.IsAlive) {
+                        a.IsAlive = true;
                         a.Rotation = _player1.Rotation;
                         a.Position = _player1.Position;
+                        Debug.WriteLine(a.IsAlive);
+                        break;
                     }
                 }
             }
             foreach (Apple a in _redApples) {
-                a.Update();
+                if (a.IsAlive) {
+                    a.Update();
+                }
             }
-
+            //greenapples
+            if (KeyboardElite.HasBeenPressed(Keys.Enter)) {
+                foreach (Apple a in _greenApples) {
+                    if (!a.IsAlive) {
+                        a.IsAlive = true;
+                        a.Rotation = _player2.Rotation;
+                        a.Position = _player2.Position;
+                        break;
+                    }
+                }
+            }
+            foreach (Apple a in _greenApples) {
+                if (a.IsAlive) {
+                    a.Update();
+                }
+            }
 
 
 
@@ -88,6 +117,16 @@ namespace throw_apple2 {
             playerCollision(_player2, _player1);
             worldBounds(_player1);
             worldBounds(_player2);
+            foreach (Apple a in _redApples) {
+                if (appleBounds(a)) {
+                    a.IsAlive = false;
+                }
+            }
+            foreach (Apple a in _greenApples) {
+                if (appleBounds(a)) {
+                    a.IsAlive = false;
+                }
+            }
             _player1.Update();
             _player2.Update();
             base.Update(gameTime);
@@ -102,7 +141,14 @@ namespace throw_apple2 {
                 _spriteBatch.Draw(_walls[i].Texture, _walls[i].getRectangle(), null, _walls[i].Color, _walls[i].Rotation, _walls[i].getCenter(), SpriteEffects.None, 0f);
             }
             foreach (Apple a in _redApples) {
-                _spriteBatch.Draw(a.Texture, a.getRectangle(), null, a.Color, a.Rotation, a.getCenter(), SpriteEffects.None, 0f);
+                if (a.IsAlive) {
+                    _spriteBatch.Draw(a.Texture, a.getRectangle(), null, a.Color, a.Rotation, a.getCenter(), SpriteEffects.None, 0f);
+                }
+            }
+            foreach (Apple a in _greenApples) {
+                if (a.IsAlive) {
+                    _spriteBatch.Draw(a.Texture, a.getRectangle(), null, a.Color, a.Rotation, a.getCenter(), SpriteEffects.None, 0f);
+                }
             }
             _spriteBatch.End();
             base.Draw(gameTime);
@@ -164,6 +210,23 @@ namespace throw_apple2 {
                 e.Position = new Vector2(e.Position.X, 0 + e.HalfWidth);
             } else if (e.Position.Y > _screenHeight - e.HalfWidth) {
                 e.Position = new Vector2(e.Position.X, _screenHeight - e.HalfWidth);
+            }
+        }
+        private bool appleBounds(Apple a){
+            if (a.Position.X - a.HalfWidth < 0) {
+                return true;
+            }
+            else if (a.Position.X + a.HalfWidth > _screenWidth) {
+                return true;
+            }
+            if (a.Position.Y - a.HalfWidth < 0) {
+                return true;
+            }
+            else if (a.Position.Y > _screenHeight - a.HalfWidth) {
+                return true;
+            }
+            else {
+                return false;
             }
         }
         private void collision(List<Wall> wall, Player b)
