@@ -12,10 +12,12 @@ namespace throw_apple2 {
         private int _screenWidth, _screenHeight, _screenCenterY, _screenCenterX;
         private Player _player1, _player2;
         private List<Wall> _walls = new List<Wall>();
+        private List<Apple> _redApples = new List<Apple>();
+        private List<Apple> _greenApples = new List<Apple>();
+        private int _antalApplen = 3;
         private Wall _wall1;
         private Wall _wall2;
         private Wall _wall3;
-        private Wall _wall4;
         public Game1() {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -41,18 +43,45 @@ namespace throw_apple2 {
             
             _wall2 = new Wall(this, "hinder2", new Vector2(0, 0));
             _wall2.Position = new Vector2(100, _screenHeight - _wall2.HalfHeight);
+            _wall3 = new Wall(this, "hinder2", new Vector2(0, 0));
+            _wall3.Position = new Vector2(_screenWidth - 100, _wall3.HalfHeight);
+
             _walls.Add(_wall1);
             _walls.Add(_wall2);
+            _walls.Add(_wall3);
 
-            _player1 = new Player(this, "rcap", new Vector2(0, 0));
+            _player1 = new Player(this, "rcap", new Vector2(0, _screenHeight));
             _player2 = new Player(this, "gcap", new Vector2(_screenWidth, 0));
-            //_player.Size(_playerSize);
-            // TODO: use this.Content to load your game content here
+
+            //redApple
+            for (int i = 0; i < _antalApplen; i++) {
+                Apple tempApple = new Apple(this, "träd", new Vector2(_player1.Position.X, _player1.Position.Y));
+                _redApples.Add(tempApple);
+            }
+
+
         }
 
         protected override void Update(GameTime gameTime) {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))Exit();
+            KeyboardState _ks = Keyboard.GetState();
             
+
+            if (_ks.IsKeyDown(Keys.Space)) {
+                foreach (Apple a in _redApples) {
+                    if (a.IsAlive) {
+                        a._speed = 2;
+                        a.Position = _player1.Position;
+                    }
+                }
+                
+            }
+            
+
+
+
+
+
 
             move(_player1, _player2);
             collision(_walls, _player1);
@@ -72,6 +101,9 @@ namespace throw_apple2 {
             _spriteBatch.Draw(_player2.Texture, _player2.getRectangle(), null, _player2.Color, _player2.Rotation, _player2.getCenter(), SpriteEffects.None, 0f);
             for (int i = 0; i < _walls.Count; i++) {
                 _spriteBatch.Draw(_walls[i].Texture, _walls[i].getRectangle(), null, _walls[i].Color, _walls[i].Rotation, _walls[i].getCenter(), SpriteEffects.None, 0f);
+            }
+            foreach (Apple a in _redApples) {
+                _spriteBatch.Draw(a.Texture, a.getRectangle(), null, a.Color, a.Rotation, a.getCenter(), SpriteEffects.None, 0f);
             }
             _spriteBatch.End();
             base.Draw(gameTime);
