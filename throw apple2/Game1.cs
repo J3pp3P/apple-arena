@@ -70,15 +70,14 @@ namespace throw_apple2 {
             if (_ks.IsKeyDown(Keys.Space)) {
                 foreach (Apple a in _redApples) {
                     if (a.IsAlive) {
-                        a._speed = 2;
+                        a.Rotation = _player1.Rotation;
                         a.Position = _player1.Position;
                     }
                 }
-                
             }
-            
-
-
+            foreach (Apple a in _redApples) {
+                a.Update();
+            }
 
 
 
